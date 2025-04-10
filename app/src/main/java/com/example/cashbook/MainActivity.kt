@@ -237,7 +237,7 @@ class MainActivity : AppCompatActivity(), TransactionAdapter.OnTransactionLongCl
                     val canvas = page.canvas
                     val paint = Paint()
 
-                    drawTextCentered(canvas, "Cash Book", 24f, 50f, paint)
+                    drawTextCentered(canvas, "Cash Dairy", 24f, 50f, paint)
                     drawTextCentered(canvas, dateFormat.format(calendar.time), 14f, 80f, paint)
                     drawTableHeaders(canvas, paint)
 

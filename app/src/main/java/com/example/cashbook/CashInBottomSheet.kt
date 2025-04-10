@@ -133,33 +133,51 @@ class CashInBottomSheet : BottomSheetDialogFragment() {
             val amountStr = amountEditText.text.toString().trim()
             val details = detailsEditText.text.toString().trim()
 
-            try {
-                val amount = amountStr.toDouble()
-                val selectedDate = dateFormat.parse(dateText.text.toString()) ?: Date()
-                val transaction = Transaction(
-                    id = transactionToEdit?.id ?: 0,
-                    description = details,
-                    amount = amount,
-                    isCashIn = true,
-                    date = selectedDate
-                )
+            // Check for empty fields and set error messages
+            var isValid = true
+            if (amountStr.isEmpty()) {
+                amountEditText.setError("Amount is required")
+                isValid = false
+            } else {
+                amountEditText.setError(null) // Clear error if valid
+            }
+            if (details.isEmpty()) {
+                detailsEditText.setError("Details are required")
+                isValid = false
+            } else {
+                detailsEditText.setError(null) // Clear error if valid
+            }
 
-                val result = if (transactionToEdit != null) {
-                    dbHelper.updateTransaction(transaction)
-                } else {
-                    dbHelper.addTransaction(transaction)
-                }
+            // Proceed only if both fields are valid
+            if (isValid) {
+                try {
+                    val amount = amountStr.toDouble()
+                    val selectedDate = dateFormat.parse(dateText.text.toString()) ?: Date()
+                    val transaction = Transaction(
+                        id = transactionToEdit?.id ?: 0,
+                        description = details,
+                        amount = amount,
+                        isCashIn = true,
+                        date = selectedDate
+                    )
 
-                if (result > 0) {
-                    (requireActivity() as MainActivity).loadTransactions()
-                    dismiss()
-                } else {
-                    Toast.makeText(requireContext(), "Failed to save transaction", Toast.LENGTH_SHORT).show()
+                    val result = if (transactionToEdit != null) {
+                        dbHelper.updateTransaction(transaction)
+                    } else {
+                        dbHelper.addTransaction(transaction)
+                    }
+
+                    if (result > 0) {
+                        (requireActivity() as MainActivity).loadTransactions()
+                        dismiss()
+                    } else {
+                        Toast.makeText(requireContext(), "Failed to save transaction", Toast.LENGTH_SHORT).show()
+                    }
+                } catch (e: NumberFormatException) {
+                    amountEditText.setError("Invalid amount")
+                } catch (e: Exception) {
+                    Toast.makeText(requireContext(), "Error: ${e.message}", Toast.LENGTH_SHORT).show()
                 }
-            } catch (e: NumberFormatException) {
-                Toast.makeText(requireContext(), "Invalid amount", Toast.LENGTH_SHORT).show()
-            } catch (e: Exception) {
-                Toast.makeText(requireContext(), "Error: ${e.message}", Toast.LENGTH_SHORT).show()
             }
         }
     }
