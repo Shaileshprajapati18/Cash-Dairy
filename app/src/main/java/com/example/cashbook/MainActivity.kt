@@ -69,7 +69,7 @@ class MainActivity : AppCompatActivity(), TransactionAdapter.OnTransactionLongCl
         updateMonthYearDisplay()
         loadTransactions()
         createNotificationChannel()
-        checkNotificationPermission() // Check for notification permission on start
+        checkNotificationPermission()
     }
 
     private fun initViews() {
@@ -96,10 +96,10 @@ class MainActivity : AppCompatActivity(), TransactionAdapter.OnTransactionLongCl
 
     private fun setupListeners() {
         btnCashin.setOnClickListener {
-            CashInBottomSheet.newInstance().show(supportFragmentManager, "CashInBottomSheet")
+            CashInDialog.newInstance().show(supportFragmentManager, "CashInDialog")
         }
         btnCashout.setOnClickListener {
-            CashOutBottomSheet.newInstance().show(supportFragmentManager, "CashOutBottomSheet")
+            CashOutDialog.newInstance().show(supportFragmentManager, "CashOutDialog")
         }
         monthDropdown.setOnClickListener {
             showMonthPicker()
@@ -151,8 +151,12 @@ class MainActivity : AppCompatActivity(), TransactionAdapter.OnTransactionLongCl
     }
 
     override fun onTransactionClick(transaction: Transaction) {
-        val fragment = if (transaction.isCashIn) CashInBottomSheet.newInstance(transaction) else CashOutBottomSheet.newInstance(transaction)
-        fragment.show(supportFragmentManager, if (transaction.isCashIn) "CashInBottomSheet" else "CashOutBottomSheet")
+        val fragment = if (transaction.isCashIn) {
+            CashInDialog.newInstance(transaction)
+        } else {
+            CashOutDialog.newInstance(transaction)
+        }
+        fragment.show(supportFragmentManager, if (transaction.isCashIn) "CashInDialog" else "CashOutDialog")
     }
 
     private fun showDeleteConfirmationDialog(transaction: Transaction) {
@@ -279,12 +283,13 @@ class MainActivity : AppCompatActivity(), TransactionAdapter.OnTransactionLongCl
     }
 
     private fun checkNotificationPermission() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) { // Android 13+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.POST_NOTIFICATIONS), NOTIFICATION_PERMISSION_CODE)
             }
         }
     }
+
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == NOTIFICATION_PERMISSION_CODE) {
@@ -332,12 +337,12 @@ class MainActivity : AppCompatActivity(), TransactionAdapter.OnTransactionLongCl
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED) {
-                notificationManager.notify(1, notification) // Use a fixed ID for testing
+                notificationManager.notify(1, notification)
             } else {
                 Toast.makeText(this, "Notification not shown due to missing permission", Toast.LENGTH_SHORT).show()
             }
         } else {
-            notificationManager.notify(1, notification) // Use a fixed ID for testing
+            notificationManager.notify(1, notification)
         }
     }
 

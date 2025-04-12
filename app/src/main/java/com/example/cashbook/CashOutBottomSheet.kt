@@ -1,25 +1,26 @@
 package com.example.cashbook
 
 import android.app.DatePickerDialog
+import android.app.Dialog
 import android.app.TimePickerDialog
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.DialogFragment
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
-class CashOutBottomSheet : BottomSheetDialogFragment() {
+class CashOutDialog : DialogFragment() {
     private lateinit var amountEditText: EditText
     private lateinit var detailsEditText: EditText
     private lateinit var dateText: TextView
@@ -32,8 +33,8 @@ class CashOutBottomSheet : BottomSheetDialogFragment() {
     companion object {
         private const val ARG_TRANSACTION = "transaction"
 
-        fun newInstance(transaction: Transaction? = null): CashOutBottomSheet {
-            val fragment = CashOutBottomSheet()
+        fun newInstance(transaction: Transaction? = null): CashOutDialog {
+            val fragment = CashOutDialog()
             transaction?.let {
                 val args = Bundle().apply {
                     putParcelable(ARG_TRANSACTION, it)
@@ -49,14 +50,9 @@ class CashOutBottomSheet : BottomSheetDialogFragment() {
         transactionToEdit = arguments?.getParcelable(ARG_TRANSACTION)
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? = inflater.inflate(R.layout.cash_out_transaction, container, false)
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        val inflater = LayoutInflater.from(context)
+        val view = inflater.inflate(R.layout.cash_out_transaction, null)
 
         dbHelper = DatabaseHelper(requireContext())
         amountEditText = view.findViewById(R.id.amountEditText)
@@ -71,9 +67,15 @@ class CashOutBottomSheet : BottomSheetDialogFragment() {
         } else {
             setInitialDate()
         }
+
         setupDatePicker()
         setupTextWatcher()
         setupSaveButton()
+
+        return AlertDialog.Builder(requireContext())
+            .setView(view)
+            .setCancelable(true)
+            .create()
     }
 
     private fun setInitialDate() {
@@ -133,22 +135,20 @@ class CashOutBottomSheet : BottomSheetDialogFragment() {
             val amountStr = amountEditText.text.toString().trim()
             val details = detailsEditText.text.toString().trim()
 
-            // Check for empty fields and set error messages
             var isValid = true
             if (amountStr.isEmpty()) {
-                amountEditText.setError("Amount is required")
+                amountEditText.error = "Amount is required"
                 isValid = false
             } else {
-                amountEditText.setError(null) // Clear error if valid
+                amountEditText.error = null
             }
             if (details.isEmpty()) {
-                detailsEditText.setError("Details are required")
+                detailsEditText.error = "Details are required"
                 isValid = false
             } else {
-                detailsEditText.setError(null) // Clear error if valid
+                detailsEditText.error = null
             }
 
-            // Proceed only if both fields are valid
             if (isValid) {
                 try {
                     val amount = amountStr.toDouble()
@@ -174,7 +174,7 @@ class CashOutBottomSheet : BottomSheetDialogFragment() {
                         Toast.makeText(requireContext(), "Failed to save transaction", Toast.LENGTH_SHORT).show()
                     }
                 } catch (e: NumberFormatException) {
-                    amountEditText.setError("Invalid amount")
+                    amountEditText.error = "Invalid amount"
                 } catch (e: Exception) {
                     Toast.makeText(requireContext(), "Error: ${e.message}", Toast.LENGTH_SHORT).show()
                 }
