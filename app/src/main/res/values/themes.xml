@@ -17,8 +17,6 @@
         <item name="colorSecondaryVariant">@color/accent_dark</item>
         <item name="colorOnSecondary">@android:color/black</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor">@color/black</item>
-        <!-- Enable window content transitions -->
         <item name="android:windowActivityTransitions">true</item>
     </style>
 

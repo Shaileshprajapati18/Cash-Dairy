@@ -1,3 +1,7 @@
 <resources>
-    <string name="app_name">Cash Book</string>
+    <string name="app_name">Cash Diary</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="default_web_client_id">663786870176-rs5f1a4pg7vdmtn9uejge12lru15df74.apps.googleusercontent.com</string>
+
 </resources>

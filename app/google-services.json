@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "663786870176",
+    "project_id": "cash-diary-6e14c",
+    "storage_bucket": "cash-diary-6e14c.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:663786870176:android:9c756a77db127ea81240c5",
+        "android_client_info": {
+          "package_name": "com.example.cashbook"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "663786870176-sjblh4mbm7l6vjngl7q1c6esb9bkfpfs.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.cashbook",
+            "certificate_hash": "6bfe42b2e5bf6b34315bea12a347420a466e48b3"
+          }
+        },
+        {
+          "client_id": "663786870176-rs5f1a4pg7vdmtn9uejge12lru15df74.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBIbv3R12dIJF-VV3hphoA83iFXrGR_4qI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "663786870176-rs5f1a4pg7vdmtn9uejge12lru15df74.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -20,6 +20,7 @@
             android:layout_height="wrap_content"
             android:text="Cash Out"
             android:textColor="@color/expense"
+            android:fontFamily="@font/verdana_bold_italic"
             android:textStyle="bold"
             android:textSize="22sp"
             android:layout_marginStart="12dp" />
@@ -39,6 +40,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="₹"
+            android:fontFamily="@font/verdana_bold_italic"
             android:textColor="@color/expense"
             android:textSize="20sp"
             android:textStyle="bold" />
@@ -48,6 +50,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Enter amount"
+            android:fontFamily="@font/verdana_bold_italic"
             android:textSize="20sp"
             android:background="@android:color/transparent"
             android:textColor="@color/expense"
@@ -74,6 +77,7 @@
             android:maxLines="1"
             android:ellipsize="end"
             android:singleLine="true"
+            android:fontFamily="@font/verdana_bold_italic"
             android:background="@android:color/transparent"
             android:textColor="@color/black"
             android:paddingStart="8dp" />
@@ -116,6 +120,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="06 Apr 25"
+                    android:fontFamily="@font/verdana_bold_italic"
                     android:textSize="16sp"
                     android:layout_marginStart="8dp"
                     android:textColor="@color/black" />
@@ -138,6 +143,7 @@
         android:layout_height="wrap_content"
         android:text="SAVE"
         android:enabled="false"
+        android:fontFamily="@font/verdana_bold_italic"
         android:textAllCaps="true"
         android:textColor="@color/white"
         android:backgroundTint="@color/expense"

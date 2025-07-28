@@ -67,7 +67,6 @@ class CashInDialog : DialogFragment() {
         } else {
             setInitialDate()
         }
-
         setupDatePicker()
         setupTextWatcher()
         setupSaveButton()
@@ -169,6 +168,8 @@ class CashInDialog : DialogFragment() {
 
                     if (result > 0) {
                         (requireActivity() as MainActivity).loadTransactions()
+                        (requireActivity() as MainActivity).onTransactionCompleted()
+
                         dismiss()
                     } else {
                         Toast.makeText(requireContext(), "Failed to save transaction", Toast.LENGTH_SHORT).show()

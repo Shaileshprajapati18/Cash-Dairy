@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:id="@+id/nav_group_main">
+
+        <item
+            android:id="@+id/nav_backup"
+            android:icon="@drawable/backup"
+            android:title="Backup to Google drive" />
+
+        <item
+            android:id="@+id/nav_restore"
+            android:icon="@drawable/restore"
+            android:title="Restore from Google drive" />
+
+        <item
+            android:id="@+id/nav_sign_out"
+            android:icon="@drawable/logout"
+            android:title="Sign Out" />
+
+
+    </group>
+
+</menu>

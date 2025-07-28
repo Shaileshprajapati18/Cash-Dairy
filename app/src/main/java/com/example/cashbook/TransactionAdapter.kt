@@ -18,6 +18,7 @@ class TransactionAdapter(private val context: android.content.Context) :
 
     interface OnTransactionLongClickListener {
         fun onTransactionLongClick(transaction: Transaction)
+        fun onTransactionCompleted()
     }
 
     interface OnTransactionClickListener {

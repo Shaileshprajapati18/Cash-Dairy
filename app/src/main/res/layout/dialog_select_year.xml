@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:padding="20dp"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/dialog_background">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Select Year"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:fontFamily="@font/verdana_bold_italic"
+        android:textColor="@color/black"
+        android:layout_gravity="center_horizontal" />
+
+    <ListView
+        android:id="@+id/year_list"
+        android:layout_width="match_parent"
+        android:layout_marginTop="10dp"
+        android:layout_height="wrap_content"
+
+        android:dividerHeight="1dp" />
+</LinearLayout>

@@ -38,6 +38,19 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         onCreate(db)
     }
 
+    fun insertTransaction(description: String, amount: Double, date: Long, isCashIn: Boolean): Long {
+        val db = writableDatabase
+        val values = ContentValues().apply {
+            put(COLUMN_DESCRIPTION, description)
+            put(COLUMN_AMOUNT, amount)
+            put(COLUMN_IS_CASH_IN, if (isCashIn) 1 else 0)
+            put(COLUMN_DATE, date)
+        }
+        val id = db.insert(TABLE_NAME, null, values)
+        db.close()
+        return id
+    }
+
     fun addTransaction(transaction: Transaction): Int {
         val db = writableDatabase
         val values = ContentValues().apply {
@@ -48,7 +61,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         }
         val id = db.insert(TABLE_NAME, null, values)
         db.close()
-        return if (id == -1L) 0 else 1 // Return 1 for success, 0 for failure
+        return if (id == -1L) 0 else 1
     }
 
     fun updateTransaction(transaction: Transaction): Int {
@@ -72,7 +85,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
     fun getTransactionsByMonth(year: Int, month: Int): List<Transaction> {
         val calendar = Calendar.getInstance().apply {
             set(Calendar.YEAR, year)
-            set(Calendar.MONTH, month - 1) // Month is 0-based in Calendar
+            set(Calendar.MONTH, month - 1)
             set(Calendar.DAY_OF_MONTH, 1)
             set(Calendar.HOUR_OF_DAY, 0)
             set(Calendar.MINUTE, 0)
@@ -99,7 +112,31 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
             transactions.add(Transaction(id, description, amount, isCashIn, date))
         }
         cursor.close()
+        db.close()
         return transactions
+    }
+
+    fun getAllTransactions(): List<Transaction> {
+        val transactions = mutableListOf<Transaction>()
+        val db = readableDatabase
+        val cursor = db.rawQuery("SELECT * FROM $TABLE_NAME ORDER BY $COLUMN_DATE DESC", null)
+        while (cursor.moveToNext()) {
+            val id = cursor.getLong(cursor.getColumnIndexOrThrow(COLUMN_ID))
+            val description = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_DESCRIPTION))
+            val amount = cursor.getDouble(cursor.getColumnIndexOrThrow(COLUMN_AMOUNT))
+            val isCashIn = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_IS_CASH_IN)) == 1
+            val date = Date(cursor.getLong(cursor.getColumnIndexOrThrow(COLUMN_DATE)))
+            transactions.add(Transaction(id, description, amount, isCashIn, date))
+        }
+        cursor.close()
+        db.close()
+        return transactions
+    }
+
+    fun clearAllTransactions() {
+        val db = writableDatabase
+        db.execSQL("DELETE FROM $TABLE_NAME")
+        db.close()
     }
 
     fun deleteTransaction(id: Long): Int {

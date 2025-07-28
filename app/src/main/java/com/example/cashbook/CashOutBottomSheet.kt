@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
-import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.LinearLayout
@@ -20,7 +19,7 @@ import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
-class CashOutDialog : DialogFragment() {
+    class CashOutDialog : DialogFragment() {
     private lateinit var amountEditText: EditText
     private lateinit var detailsEditText: EditText
     private lateinit var dateText: TextView
@@ -148,7 +147,6 @@ class CashOutDialog : DialogFragment() {
             } else {
                 detailsEditText.error = null
             }
-
             if (isValid) {
                 try {
                     val amount = amountStr.toDouble()
@@ -169,6 +167,8 @@ class CashOutDialog : DialogFragment() {
 
                     if (result > 0) {
                         (requireActivity() as MainActivity).loadTransactions()
+                        (requireActivity() as MainActivity).onTransactionCompleted()  // Show ad if needed
+
                         dismiss()
                     } else {
                         Toast.makeText(requireContext(), "Failed to save transaction", Toast.LENGTH_SHORT).show()
